@@ -1,0 +1,148 @@
+-- Сервисы
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+
+-- Хранилище для ESP объектов
+local espElements = {}
+
+-- Создание ESP для игрока
+local function createESP(player)
+    if player == LocalPlayer then return end -- Игнорируем локального игрока
+
+    local espTable = {}
+
+    -- Текст для имени
+    local nameTag = Drawing.new("Text")
+    nameTag.Visible = false
+    nameTag.Center = true
+    nameTag.Outline = true
+    nameTag.Size = 18
+    nameTag.Color = Color3.fromRGB(255, 255, 255) -- Белый цвет
+    nameTag.Text = player.Name
+    espTable.nameTag = nameTag
+
+    -- Текст для команды
+    local teamTag = Drawing.new("Text")
+    teamTag.Visible = false
+    teamTag.Center = true
+    teamTag.Outline = true
+    teamTag.Size = 16
+    teamTag.Color = Color3.fromRGB(128, 128, 128) -- Серый цвет
+    espTable.teamTag = teamTag
+   
+    -- Создание линий для выделения силуэта
+    local lines = {}
+    for i = 1, 4 do
+        local line = Drawing.new("Line")
+        line.Visible = false
+        line.Thickness = 2
+        line.Transparency = 1
+        table.insert(lines, line)
+    end
+    espTable.lines = lines
+    
+    espElements[player] = espTable
+end
+
+-- Обновление ESP для всех игроков
+local function updateESP()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local character = player.Character
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            local head = character:FindFirstChild("Head")
+            local espData = espElements[player]
+            
+            if espData and head and humanoidRootPart then
+                local rootPos, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+                local nameTag = espData.nameTag
+                local teamTag = espData.teamTag
+                local lines = espData.lines
+                
+                if onScreen then
+                    -- Обновляем текст имени
+                    local headPos = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 0.5, 0))
+                    nameTag.Position = Vector2.new(headPos.X, headPos.Y - 30)
+                    nameTag.Visible = true
+
+                    -- Обновляем текст команды
+                    local teamName = player.Team and player.Team.Name or "No Team"
+                    teamTag.Text = teamName
+                    teamTag.Position = Vector2.new(headPos.X, headPos.Y - 15)
+                    teamTag.Visible = true
+
+                    -- Обновляем цвет линий в зависимости от команды
+                    local teamColor = player.Team and player.Team.TeamColor.Color or Color3.fromRGB(255, 255, 255)
+                    for _, line in ipairs(lines) do
+                        line.Color = teamColor
+                    end
+
+                    -- Обновляем видимость и позиции линий
+                    local points = {
+                        Camera:WorldToViewportPoint(humanoidRootPart.Position + Vector3.new(-1, 2, 0)),   -- Лево-верх
+                        Camera:WorldToViewportPoint(humanoidRootPart.Position + Vector3.new(1, 2, 0)),    -- Право-верх
+                        Camera:WorldToViewportPoint(humanoidRootPart.Position + Vector3.new(-1, -2, 0)),  -- Лево-низ
+                        Camera:WorldToViewportPoint(humanoidRootPart.Position + Vector3.new(1, -2, 0)),   -- Право-низ
+                    }
+
+                    lines[1].From = Vector2.new(points[1].X, points[1].Y)
+                    lines[1].To = Vector2.new(points[2].X, points[2].Y)
+                    lines[1].Visible = true
+
+                    lines[2].From = Vector2.new(points[2].X, points[2].Y)
+                    lines[2].To = Vector2.new(points[4].X, points[4].Y)
+                    lines[2].Visible = true
+
+                    lines[3].From = Vector2.new(points[4].X, points[4].Y)
+                    lines[3].To = Vector2.new(points[3].X, points[3].Y)
+                    lines[3].Visible = true
+
+                    lines[4].From = Vector2.new(points[3].X, points[3].Y)
+                    lines[4].To = Vector2.new(points[1].X, points[1].Y)
+                    lines[4].Visible = true
+                else
+                    -- Скрытие текста и линий, если игрока не видно
+                    nameTag.Visible = false
+                    teamTag.Visible = false
+                    for _, line in ipairs(lines) do
+                        line.Visible = false
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Удаление ESP, если игрок покидает игру
+local function removeESP(player)
+    if espElements[player] then
+        espElements[player].nameTag:Remove()
+        espElements[player].teamTag:Remove()
+        for _, line in ipairs(espElements[player].lines) do
+            line:Remove()
+        end
+        espElements[player] = nil
+    end
+end
+
+-- Инициализация ESP для всех игроков
+for _, player in pairs(Players:GetPlayers()) do
+    createESP(player)
+end
+
+-- Обновление ESP для новых игроков
+Players.PlayerAdded:Connect(function(player)
+    createESP(player)
+end)
+
+-- Удаление ESP при выходе игрока
+Players.PlayerRemoving:Connect(function(player)
+    removeESP(player)
+end)
+
+-- Главный цикл обновления ESP
+RunService.RenderStepped:Connect(function()
+    updateESP()
+end)
