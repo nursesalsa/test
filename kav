@@ -49,7 +49,7 @@ end
 
 
 local themes = {
-    SchemeColor = Color3.fromRGB(74, 99, 115),
+    SchemeColor = Color3.fromRGB(74, 99, 135),
     Background = Color3.fromRGB(36, 37, 43),
     Header = Color3.fromRGB(28, 29, 34),
     TextColor = Color3.fromRGB(255,255,255),
@@ -171,7 +171,7 @@ function Kavo.CreateLib(kavName, themeList)
         themeList = themeStyles.Serpent
     else
         if themeList.SchemeColor == nil then
-            themeList.SchemeColor = Color3.fromRGB(74, 99, 115)
+            themeList.SchemeColor = Color3.fromRGB(74, 99, 135)
         elseif themeList.Background == nil then
             themeList.Background = Color3.fromRGB(36, 37, 43)
         elseif themeList.Header == nil then
@@ -274,7 +274,7 @@ function Kavo.CreateLib(kavName, themeList)
     close.Position = UDim2.new(0.949999988, 0, 0.137999997, 0)
     close.Size = UDim2.new(0, 21, 0, 21)
     close.ZIndex = 2
-    close.Image = "rbxassetid://3925005904"
+    close.Image = "rbxassetid://3926305904"
     close.ImageRectOffset = Vector2.new(284, 4)
     close.ImageRectSize = Vector2.new(24, 24)
     close.MouseButton1Click:Connect(function()
@@ -305,7 +305,7 @@ function Kavo.CreateLib(kavName, themeList)
     tabFrames.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     tabFrames.BackgroundTransparency = 1.000
     tabFrames.Position = UDim2.new(0.0438990258, 0, -0.00066378375, 0)
-    tabFrames.Size = UDim2.new(0, 115, 0, 283)
+    tabFrames.Size = UDim2.new(0, 135, 0, 283)
 
     tabListing.Name = "tabListing"
     tabListing.Parent = tabFrames
@@ -317,7 +317,7 @@ function Kavo.CreateLib(kavName, themeList)
     pages.BackgroundTransparency = 1.000
     pages.BorderSizePixel = 0
     pages.Position = UDim2.new(0.299047589, 0, 0.122641519, 0)
-    pages.Size = UDim2.new(0, 255, 0, 269)
+    pages.Size = UDim2.new(0, 360, 0, 269)
 
     Pages.Name = "Pages"
     Pages.Parent = pages
@@ -328,8 +328,8 @@ function Kavo.CreateLib(kavName, themeList)
     infoContainer.BackgroundTransparency = 1.000
     infoContainer.BorderColor3 = Color3.fromRGB(27, 42, 53)
     infoContainer.ClipsDescendants = true
-    infoContainer.Position = UDim2.new(0.299047619, 0, 0.874213815, 0)
-    infoContainer.Size = UDim2.new(0, 250, 0, 33)
+    infoContainer.Position = UDim2.new(0.299047619, 0, 0.122641549, 0)
+    infoContainer.Size = UDim2.new(0, 368, 0, 33)
 
     
     coroutine.wrap(function()
@@ -394,7 +394,7 @@ function Kavo.CreateLib(kavName, themeList)
         tabButton.Parent = tabFrames
         tabButton.BackgroundColor3 = themeList.SchemeColor
         Objects[tabButton] = "SchemeColor"
-        tabButton.Size = UDim2.new(0, 115, 0, 28)
+        tabButton.Size = UDim2.new(0, 135, 0, 28)
         tabButton.AutoButtonColor = false
         tabButton.Font = Enum.Font.Gotham
         tabButton.Text = tabName
@@ -596,7 +596,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 Objects[viewInfo] = "ImageColor3"
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
@@ -638,7 +638,7 @@ function Kavo.CreateLib(kavName, themeList)
                 touch.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 touch.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 touch.Size = UDim2.new(0, 21, 0, 21)
-                touch.Image = "rbxassetid://3925005904"
+                touch.Image = "rbxassetid://3926305904"
                 touch.ImageColor3 = themeList.SchemeColor
                 Objects[touch] = "SchemeColor"
                 touch.ImageRectOffset = Vector2.new(84, 204)
@@ -789,7 +789,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
                 viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -801,7 +801,7 @@ function Kavo.CreateLib(kavName, themeList)
                 write.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 write.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 write.Size = UDim2.new(0, 21, 0, 21)
-                write.Image = "rbxassetid://3925005904"
+                write.Image = "rbxassetid://3926305904"
                 write.ImageColor3 = themeList.SchemeColor
                 write.ImageRectOffset = Vector2.new(324, 604)
                 write.ImageRectSize = Vector2.new(36, 36)
@@ -985,7 +985,7 @@ function Kavo.CreateLib(kavName, themeList)
                     toggleDisabled.BackgroundTransparency = 1.000
                     toggleDisabled.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                     toggleDisabled.Size = UDim2.new(0, 21, 0, 21)
-                    toggleDisabled.Image = "rbxassetid://3925009567"
+                    toggleDisabled.Image = "rbxassetid://3926309567"
                     toggleDisabled.ImageColor3 = themeList.SchemeColor
                     toggleDisabled.ImageRectOffset = Vector2.new(628, 420)
                     toggleDisabled.ImageRectSize = Vector2.new(48, 48)
@@ -996,7 +996,7 @@ function Kavo.CreateLib(kavName, themeList)
                     toggleEnabled.BackgroundTransparency = 1.000
                     toggleEnabled.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                     toggleEnabled.Size = UDim2.new(0, 21, 0, 21)
-                    toggleEnabled.Image = "rbxassetid://3925009567"
+                    toggleEnabled.Image = "rbxassetid://3926309567"
                     toggleEnabled.ImageColor3 = themeList.SchemeColor
                     toggleEnabled.ImageRectOffset = Vector2.new(784, 420)
                     toggleEnabled.ImageRectSize = Vector2.new(48, 48)
@@ -1021,7 +1021,7 @@ function Kavo.CreateLib(kavName, themeList)
                     viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                     viewInfo.Size = UDim2.new(0, 23, 0, 23)
                     viewInfo.ZIndex = 2
-                    viewInfo.Image = "rbxassetid://3925005904"
+                    viewInfo.Image = "rbxassetid://3926305904"
                     viewInfo.ImageColor3 = themeList.SchemeColor
                     viewInfo.ImageRectOffset = Vector2.new(764, 764)
                     viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -1248,7 +1248,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
                 viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -1274,7 +1274,7 @@ function Kavo.CreateLib(kavName, themeList)
                 sliderDrag.Name = "sliderDrag"
                 sliderDrag.Parent = sliderBtn
                 sliderDrag.BackgroundColor3 = themeList.SchemeColor
-                sliderDrag.BorderColor3 = Color3.fromRGB(74, 99, 115)
+                sliderDrag.BorderColor3 = Color3.fromRGB(74, 99, 135)
                 sliderDrag.BorderSizePixel = 0
                 sliderDrag.Size = UDim2.new(-0.671140969, 100,1,0)
 
@@ -1287,7 +1287,7 @@ function Kavo.CreateLib(kavName, themeList)
                 write.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 write.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 write.Size = UDim2.new(0, 21, 0, 21)
-                write.Image = "rbxassetid://3925007971"
+                write.Image = "rbxassetid://3926307971"
                 write.ImageColor3 = themeList.SchemeColor
                 write.ImageRectOffset = Vector2.new(404, 164)
                 write.ImageRectSize = Vector2.new(36, 36)
@@ -1548,7 +1548,7 @@ function Kavo.CreateLib(kavName, themeList)
                 listImg.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 listImg.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 listImg.Size = UDim2.new(0, 21, 0, 21)
-                listImg.Image = "rbxassetid://3925005904"
+                listImg.Image = "rbxassetid://3926305904"
                 listImg.ImageColor3 = themeList.SchemeColor
                 listImg.ImageRectOffset = Vector2.new(644, 364)
                 listImg.ImageRectSize = Vector2.new(36, 36)
@@ -1572,7 +1572,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
                 viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -1995,7 +1995,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
                 viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -2059,7 +2059,7 @@ function Kavo.CreateLib(kavName, themeList)
                 touch.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 touch.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 touch.Size = UDim2.new(0, 21, 0, 21)
-                touch.Image = "rbxassetid://3925005904"
+                touch.Image = "rbxassetid://3926305904"
                 touch.ImageColor3 = themeList.SchemeColor
                 touch.ImageRectOffset = Vector2.new(364, 284)
                 touch.ImageRectSize = Vector2.new(36, 36)
@@ -2223,7 +2223,7 @@ function Kavo.CreateLib(kavName, themeList)
                 touch.BorderColor3 = Color3.fromRGB(27, 42, 53)
                 touch.Position = UDim2.new(0.0199999996, 0, 0.180000007, 0)
                 touch.Size = UDim2.new(0, 21, 0, 21)
-                touch.Image = "rbxassetid://3925005904"
+                touch.Image = "rbxassetid://3926305904"
                 touch.ImageColor3 = themeList.SchemeColor
                 touch.ImageRectOffset = Vector2.new(44, 964)
                 touch.ImageRectSize = Vector2.new(36, 36)
@@ -2265,7 +2265,7 @@ function Kavo.CreateLib(kavName, themeList)
                 viewInfo.Position = UDim2.new(0.930000007, 0, 0.151999995, 0)
                 viewInfo.Size = UDim2.new(0, 23, 0, 23)
                 viewInfo.ZIndex = 2
-                viewInfo.Image = "rbxassetid://3925005904"
+                viewInfo.Image = "rbxassetid://3926305904"
                 viewInfo.ImageColor3 = themeList.SchemeColor
                 viewInfo.ImageRectOffset = Vector2.new(764, 764)
                 viewInfo.ImageRectSize = Vector2.new(36, 36)
@@ -2328,7 +2328,7 @@ function Kavo.CreateLib(kavName, themeList)
                 rbgcircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 rbgcircle.BackgroundTransparency = 1.000
                 rbgcircle.Size = UDim2.new(0, 14, 0, 14)
-                rbgcircle.Image = "rbxassetid://3925009567"
+                rbgcircle.Image = "rbxassetid://3926309567"
                 rbgcircle.ImageColor3 = Color3.fromRGB(0, 0, 0)
                 rbgcircle.ImageRectOffset = Vector2.new(628, 420)
                 rbgcircle.ImageRectSize = Vector2.new(48, 48)
@@ -2350,7 +2350,7 @@ function Kavo.CreateLib(kavName, themeList)
                 darkcircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 darkcircle.BackgroundTransparency = 1.000
                 darkcircle.Size = UDim2.new(0, 14, 0, 14)
-                darkcircle.Image = "rbxassetid://3925009567"
+                darkcircle.Image = "rbxassetid://3926309567"
                 darkcircle.ImageColor3 = Color3.fromRGB(0, 0, 0)
                 darkcircle.ImageRectOffset = Vector2.new(628, 420)
                 darkcircle.ImageRectSize = Vector2.new(48, 48)
@@ -2361,7 +2361,7 @@ function Kavo.CreateLib(kavName, themeList)
                 toggleDisabled.BackgroundTransparency = 1.000
                 toggleDisabled.Position = UDim2.new(0.704659104, 0, 0.0657142699, 0)
                 toggleDisabled.Size = UDim2.new(0, 21, 0, 21)
-                toggleDisabled.Image = "rbxassetid://3925009567"
+                toggleDisabled.Image = "rbxassetid://3926309567"
                 toggleDisabled.ImageColor3 = themeList.SchemeColor
                 toggleDisabled.ImageRectOffset = Vector2.new(628, 420)
                 toggleDisabled.ImageRectSize = Vector2.new(48, 48)
@@ -2372,7 +2372,7 @@ function Kavo.CreateLib(kavName, themeList)
                 toggleEnabled.BackgroundTransparency = 1.000
                 toggleEnabled.Position = UDim2.new(0.704999983, 0, 0.0659999996, 0)
                 toggleEnabled.Size = UDim2.new(0, 21, 0, 21)
-                toggleEnabled.Image = "rbxassetid://3925009567"
+                toggleEnabled.Image = "rbxassetid://3926309567"
                 toggleEnabled.ImageColor3 = themeList.SchemeColor
                 toggleEnabled.ImageRectOffset = Vector2.new(784, 420)
                 toggleEnabled.ImageRectSize = Vector2.new(48, 48)
@@ -2382,7 +2382,7 @@ function Kavo.CreateLib(kavName, themeList)
                 onrainbow.Parent = toggleEnabled
                 onrainbow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 onrainbow.BackgroundTransparency = 1.000
-                onrainbow.Position = UDim2.new(2.90642557e-06, 0, 0, 0)
+                onrainbow.Position = UDim2.new(2.90643607e-06, 0, 0, 0)
                 onrainbow.Size = UDim2.new(1, 0, 1, 0)
                 onrainbow.Font = Enum.Font.SourceSans
                 onrainbow.Text = ""
