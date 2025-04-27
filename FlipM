@@ -2,6 +2,7 @@
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "FrontflipGUI"
+gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(0, 100, 0, 50) -- ✅ Ukuran 100 x 50
