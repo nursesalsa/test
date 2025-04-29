@@ -1,14 +1,26 @@
---- Keybind to open for pc is "comma" -> " , "
+-- Keybind to open for pc is "comma" -> " , "
 -- ty
 
 game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Tips!",
-                Text = "Wait 1 - 15 seconds to show gui if it don't show try execute again",
-                 Duration = 15})
+    Title = "Tips!",
+    Text = "Wait 1 - 15 seconds to show gui if it don't show try execute again",
+    Duration = 15
+})
 
-if game:GetService("CoreGui"):FindFirstChild("Emotes") then
-    game:GetService("CoreGui"):FindFirstChild("Emotes"):Destroy()
+local guiName = "Emotes"
+local CoreGui = game:GetService("CoreGui")
+local function findAndDestroyGui()
+	local targets = {CoreGui}
+	if get_hidden_gui or gethui then
+		table.insert(targets, (get_hidden_gui or gethui)())
+	end
+	for _, gui in ipairs(targets) do
+		if gui and gui:FindFirstChild(guiName) then
+			gui[guiName]:Destroy()
+		end
+	end
 end
+findAndDestroyGui()
 
 wait(1)
 
