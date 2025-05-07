@@ -1,0 +1,58 @@
+--// GUI Setup
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Cek dan hapus GUI lama jika sudah ada
+local existingGui = playerGui:FindFirstChild("FrontflipGUI")
+if existingGui then
+    existingGui:Destroy()
+end
+
+-- Buat GUI baru
+local gui = Instance.new("ScreenGui")
+gui.Name = "FrontflipGUI"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 100, 0, 50) -- ✅ Ukuran 100 x 50
+frame.Position = UDim2.new(0.45, 0, 0.4, 0)
+frame.BackgroundColor3 = Color3.fromRGB(8, 71, 92)
+frame.Active = true
+frame.Draggable = true
+
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 10)
+
+local button = Instance.new("TextButton", frame)
+button.Size = UDim2.new(0.8, 0, 0.6, 0)
+button.Position = UDim2.new(0.1, 0, 0.2, 0)
+button.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+button.Text = "Frontflip"
+button.Font = Enum.Font.Gotham
+button.TextScaled = true
+button.TextColor3 = Color3.new(1, 1, 1)
+
+Instance.new("UICorner", button).CornerRadius = UDim.new(0, 6)
+
+--// Frontflip function
+local h = 0.0174533 -- radians
+button.MouseButton1Click:Connect(function()
+    local character = player.Character
+    if character and character:FindFirstChild("Humanoid") and character:FindFirstChild("HumanoidRootPart") then
+        character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        task.wait()
+        character.Humanoid.Sit = true
+        for i = 1, 360 do
+            task.delay(i/720, function()
+                if character and character:FindFirstChild("HumanoidRootPart") then
+                    character.HumanoidRootPart.CFrame *= CFrame.Angles(-h, 0, 0)
+                end
+            end)
+        end
+        task.wait(0.55)
+        if character and character:FindFirstChild("Humanoid") then
+            character.Humanoid.Sit = false
+        end
+    end
+end)
