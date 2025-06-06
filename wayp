@@ -58,26 +58,14 @@ ViewHistoryButton.MouseButton1Click:Connect(function()
     HistoryFrame.Visible = not HistoryFrame.Visible
 end)
 
--- === Perubahan HistoryFrame ===
 HistoryFrame.Parent = Frame
-HistoryFrame.BackgroundColor3 = Color3.fromRGB(220, 220, 220)
-HistoryFrame.Position = UDim2.new(-1.05, 0, 0, 0) -- Pindah ke kiri
-HistoryFrame.Size = UDim2.new(1, 0, 1, 0) -- Lebih ringkas
+HistoryFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+HistoryFrame.Position = UDim2.new(1.05, 0, 0, 0)
+HistoryFrame.Size = UDim2.new(1.5, 0, 2, 0)
 HistoryFrame.Visible = false
 
 local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Padding = UDim.new(0, 4)
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Parent = HistoryFrame
-
-local UIPadding = Instance.new("UIPadding")
-UIPadding.PaddingTop = UDim.new(0, 5)
-UIPadding.PaddingBottom = UDim.new(0, 5)
-UIPadding.PaddingLeft = UDim.new(0, 5)
-UIPadding.PaddingRight = UDim.new(0, 5)
-UIPadding.Parent = HistoryFrame
-
--- === End perubahan ===
 
 NamePromptFrame.Parent = ScreenGui
 NamePromptFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -100,7 +88,7 @@ DoneButton.Text = "Done"
 -- Fungsi untuk menambahkan 1 waypoint ke UI
 local function addWaypointToUI(waypoint)
     local entryFrame = Instance.new("Frame")
-    entryFrame.Size = UDim2.new(1, 0, 0, 24) -- Lebih kecil dan konsisten
+    entryFrame.Size = UDim2.new(1, 0, 0, 20)
     entryFrame.BackgroundTransparency = 1
     entryFrame.Parent = HistoryFrame
 
