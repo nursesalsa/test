@@ -1,16 +1,160 @@
-function addWaypoint(name)
-    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if hrp then
-        local position = hrp.Position
-        waypoints[name] = {
-            x = position.X,
-            y = position.Y,
-            z = position.Z
-        }
-        print("Waypoint '" .. name .. "' disimpan.")
-        saveWaypoints()
-    else
-        warn("Tidak menemukan HumanoidRootPart. Pastikan karakter sudah spawn.")
+local HttpService = game:GetService("HttpService")
+local placeId = tostring(game.PlaceId)
+local filename = "waypoints_" .. placeId .. ".json"
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local SetWaypointButton = Instance.new("TextButton")
+local ViewHistoryButton = Instance.new("TextButton")
+local HistoryFrame = Instance.new("Frame")
+local NamePromptFrame = Instance.new("Frame")
+local NameTextBox = Instance.new("TextBox")
+local DoneButton = Instance.new("TextButton")
+local waypoints = {}
+
+-- Fungsi simpan dan muat
+local function saveWaypoints()
+    local json = HttpService:JSONEncode(waypoints)
+    writefile(filename, json)
+end
+
+local function loadWaypoints()
+    if isfile(filename) then
+        local data = readfile(filename)
+        local decoded = HttpService:JSONDecode(data)
+        if typeof(decoded) == "table" then
+            waypoints = decoded
+        end
     end
+end
+
+-- GUI Setup
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Position = UDim2.new(0.5, -75, 0.5, -50)
+Frame.Size = UDim2.new(0, 150, 0, 100)
+Frame.Active = true
+Frame.Draggable = true
+
+SetWaypointButton.Parent = Frame
+SetWaypointButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+SetWaypointButton.Position = UDim2.new(0.25, 0, 0.1, 0)
+SetWaypointButton.Size = UDim2.new(0.5, 0, 0.35, 0)
+SetWaypointButton.Text = "Set Waypoint"
+
+SetWaypointButton.MouseButton1Click:Connect(function()
+    NamePromptFrame.Visible = true
+end)
+
+ViewHistoryButton.Parent = Frame
+ViewHistoryButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+ViewHistoryButton.Position = UDim2.new(0.25, 0, 0.55, 0)
+ViewHistoryButton.Size = UDim2.new(0.5, 0, 0.35, 0)
+ViewHistoryButton.Text = "Waypoint List"
+
+ViewHistoryButton.MouseButton1Click:Connect(function()
+    HistoryFrame.Visible = not HistoryFrame.Visible
+end)
+
+-- === Perubahan HistoryFrame ===
+HistoryFrame.Parent = Frame
+HistoryFrame.BackgroundColor3 = Color3.fromRGB(220, 220, 220)
+HistoryFrame.Position = UDim2.new(-1.05, 0, 0, 0) -- Pindah ke kiri
+HistoryFrame.Size = UDim2.new(1, 0, 1, 0) -- Lebih ringkas
+HistoryFrame.Visible = false
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Padding = UDim.new(0, 4)
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = HistoryFrame
+
+local UIPadding = Instance.new("UIPadding")
+UIPadding.PaddingTop = UDim.new(0, 5)
+UIPadding.PaddingBottom = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.PaddingRight = UDim.new(0, 5)
+UIPadding.Parent = HistoryFrame
+
+-- === End perubahan ===
+
+NamePromptFrame.Parent = ScreenGui
+NamePromptFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+NamePromptFrame.Position = UDim2.new(0.5, -100, 0.5, -50)
+NamePromptFrame.Size = UDim2.new(0, 200, 0, 100)
+NamePromptFrame.Visible = false
+
+NameTextBox.Parent = NamePromptFrame
+NameTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NameTextBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+NameTextBox.Size = UDim2.new(0.8, 0, 0.4, 0)
+NameTextBox.Text = "Enter waypoint name"
+
+DoneButton.Parent = NamePromptFrame
+DoneButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+DoneButton.Position = UDim2.new(0.3, 0, 0.7, 0)
+DoneButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+DoneButton.Text = "Done"
+
+-- Fungsi untuk menambahkan 1 waypoint ke UI
+local function addWaypointToUI(waypoint)
+    local entryFrame = Instance.new("Frame")
+    entryFrame.Size = UDim2.new(1, 0, 0, 24) -- Lebih kecil dan konsisten
+    entryFrame.BackgroundTransparency = 1
+    entryFrame.Parent = HistoryFrame
+
+    local deleteButton = Instance.new("TextButton")
+    deleteButton.Size = UDim2.new(0, 20, 1, 0)
+    deleteButton.Position = UDim2.new(0, 0, 0, 0)
+    deleteButton.Text = "X"
+    deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    deleteButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    deleteButton.Parent = entryFrame
+
+    local label = Instance.new("TextButton")
+    label.Size = UDim2.new(1, -25, 1, 0)
+    label.Position = UDim2.new(0, 25, 0, 0)
+    label.Text = waypoint.name
+    label.TextColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = entryFrame
+
+    label.MouseButton1Click:Connect(function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(waypoint.position)
+        print("Teleported to waypoint: " .. waypoint.name)
+    end)
+
+    deleteButton.MouseButton1Click:Connect(function()
+        entryFrame:Destroy()
+        for i, wp in ipairs(waypoints) do
+            if wp == waypoint then
+                table.remove(waypoints, i)
+                print("Deleted waypoint: " .. wp.name)
+                saveWaypoints()
+                break
+            end
+        end
+    end)
+end
+
+-- Simpan waypoint saat selesai input
+DoneButton.MouseButton1Click:Connect(function()
+    local waypoint = {
+        position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+        name = NameTextBox.Text
+    }
+    table.insert(waypoints, waypoint)
+    addWaypointToUI(waypoint)
+    saveWaypoints()
+
+    NamePromptFrame.Visible = false
+    NameTextBox.Text = "Enter waypoint name"
+end)
+
+-- Load dari file dan tampilkan semua
+loadWaypoints()
+for _, wp in ipairs(waypoints) do
+    addWaypointToUI(wp)
 end
