@@ -1,7 +1,8 @@
 --[[
-    Waypoint System ala Infinite Yield + GUI
+    Waypoint System ala Infinite Yield + GUI (Fixed)
     - Menyimpan waypoint dalam dictionary berbasis nama
     - GUI untuk tambah, teleport, hapus
+    - Perbaikan: AutomaticCanvasSize berfungsi
 ]]
 
 local HttpService = game:GetService("HttpService")
@@ -91,33 +92,40 @@ addBtn.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
 local listFrame = Instance.new("ScrollingFrame", mainFrame)
 listFrame.Size = UDim2.new(1, -20, 0, 140)
 listFrame.Position = UDim2.new(0, 10, 0, 90)
-listFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-listFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 listFrame.ScrollBarThickness = 6
-
-local layout = Instance.new("UIListLayout", listFrame)
-layout.Padding = UDim.new(0, 5)
-layout.SortOrder = Enum.SortOrder.LayoutOrder
+listFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+listFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+listFrame.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
+listFrame.BackgroundColor3 = Color3.fromRGB(240, 255, 255)
+listFrame.BorderSizePixel = 0
 
 function refreshList()
     listFrame:ClearAllChildren()
+
+    local layout = Instance.new("UIListLayout")
+    layout.Padding = UDim.new(0, 5)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
     layout.Parent = listFrame
+
     for name, pos in pairs(waypoints) do
-        local entry = Instance.new("Frame", listFrame)
+        local entry = Instance.new("Frame")
         entry.Size = UDim2.new(1, 0, 0, 30)
         entry.BackgroundTransparency = 1
+        entry.Parent = listFrame
 
-        local tpBtn = Instance.new("TextButton", entry)
+        local tpBtn = Instance.new("TextButton")
         tpBtn.Text = name
         tpBtn.Size = UDim2.new(0.6, -5, 1, 0)
         tpBtn.Position = UDim2.new(0, 0, 0, 0)
         tpBtn.BackgroundColor3 = Color3.fromRGB(255, 250, 205)
+        tpBtn.Parent = entry
 
-        local delBtn = Instance.new("TextButton", entry)
+        local delBtn = Instance.new("TextButton")
         delBtn.Text = "X"
         delBtn.Size = UDim2.new(0.4, -5, 1, 0)
         delBtn.Position = UDim2.new(0.6, 5, 0, 0)
         delBtn.BackgroundColor3 = Color3.fromRGB(255, 105, 97)
+        delBtn.Parent = entry
 
         tpBtn.MouseButton1Click:Connect(function()
             teleportTo(name)
