@@ -1,7 +1,6 @@
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local SetWaypointButton = Instance.new("TextButton")
-local GotoWaypointButton = Instance.new("TextButton")
 local ViewHistoryButton = Instance.new("TextButton")
 local ClearHistoryButton = Instance.new("TextButton")
 local HistoryFrame = Instance.new("Frame")
@@ -29,25 +28,9 @@ SetWaypointButton.MouseButton1Click:Connect(function()
     NamePromptFrame.Visible = true
 end)
 
-GotoWaypointButton.Parent = Frame
-GotoWaypointButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-GotoWaypointButton.Position = UDim2.new(0.25, 0, 0.25, 0)
-GotoWaypointButton.Size = UDim2.new(0.5, 0, 0.15, 0)
-GotoWaypointButton.Text = "Goto Waypoint"
-
-GotoWaypointButton.MouseButton1Click:Connect(function()
-    if #waypoints > 0 then
-        local waypoint = waypoints[#waypoints].position
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(waypoint)
-        print("Teleported to waypoint: " .. waypoints[#waypoints].name)
-    else
-        print("No waypoint set!")
-    end
-end)
-
 ViewHistoryButton.Parent = Frame
 ViewHistoryButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-ViewHistoryButton.Position = UDim2.new(0.25, 0, 0.45, 0)
+ViewHistoryButton.Position = UDim2.new(0.25, 0, 0.3, 0)
 ViewHistoryButton.Size = UDim2.new(0.5, 0, 0.15, 0)
 ViewHistoryButton.Text = "Waypoint List"
 
@@ -57,14 +40,14 @@ end)
 
 ClearHistoryButton.Parent = Frame
 ClearHistoryButton.BackgroundColor3 = Color3.fromRGB(255, 69, 58)
-ClearHistoryButton.Position = UDim2.new(0.25, 0, 0.65, 0)
+ClearHistoryButton.Position = UDim2.new(0.25, 0, 0.55, 0)
 ClearHistoryButton.Size = UDim2.new(0.5, 0, 0.15, 0)
 ClearHistoryButton.Text = "Clear History"
 
 ClearHistoryButton.MouseButton1Click:Connect(function()
     waypoints = {}
     for _, child in ipairs(HistoryFrame:GetChildren()) do
-        if child:IsA("TextButton") then
+        if child:IsA("Frame") then
             child:Destroy()
         end
     end
@@ -106,17 +89,47 @@ DoneButton.MouseButton1Click:Connect(function()
     table.insert(waypoints, waypoint)
     print("Waypoint set: " .. waypoint.name .. " at " .. tostring(waypoint.position))
 
-    -- Update HistoryFrame
+    -- Buat container Frame untuk satu baris entry
+    local entryFrame = Instance.new("Frame")
+    entryFrame.Size = UDim2.new(1, 0, 0, 20)
+    entryFrame.BackgroundTransparency = 1
+    entryFrame.Parent = HistoryFrame
+
+    -- Tombol X (hapus)
+    local deleteButton = Instance.new("TextButton")
+    deleteButton.Size = UDim2.new(0, 20, 1, 0)
+    deleteButton.Position = UDim2.new(0, 0, 0, 0)
+    deleteButton.Text = "X"
+    deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    deleteButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    deleteButton.Parent = entryFrame
+
+    -- Tombol nama waypoint (untuk teleport)
     local label = Instance.new("TextButton")
-    label.Parent = HistoryFrame
-    label.Size = UDim2.new(1, 0, 0, 20)
+    label.Size = UDim2.new(1, -25, 1, 0)
+    label.Position = UDim2.new(0, 25, 0, 0)
     label.Text = waypoint.name
     label.TextColor3 = Color3.fromRGB(0, 0, 0)
     label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = entryFrame
 
+    -- Fungsi teleport
     label.MouseButton1Click:Connect(function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(waypoint.position)
         print("Teleported to waypoint: " .. waypoint.name)
+    end)
+
+    -- Fungsi hapus waypoint ini
+    deleteButton.MouseButton1Click:Connect(function()
+        entryFrame:Destroy()
+        for i, wp in ipairs(waypoints) do
+            if wp == waypoint then
+                table.remove(waypoints, i)
+                print("Deleted waypoint: " .. wp.name)
+                break
+            end
+        end
     end)
 
     NamePromptFrame.Visible = false
