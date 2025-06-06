@@ -23,6 +23,12 @@ local function loadWaypoints()
         local data = readfile(filename)
         local decoded = HttpService:JSONDecode(data)
         if typeof(decoded) == "table" then
+            -- Konversi kembali posisi jadi Vector3
+            for _, wp in ipairs(decoded) do
+                if wp.position and type(wp.position) == "table" then
+                    wp.position = Vector3.new(wp.position.x, wp.position.y, wp.position.z)
+                end
+            end
             waypoints = decoded
         end
     end
@@ -32,14 +38,14 @@ end
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(255, 230, 250) -- pink pastel
+Frame.BackgroundColor3 = Color3.fromRGB(255, 230, 250)
 Frame.Position = UDim2.new(0.5, -75, 0.5, -50)
 Frame.Size = UDim2.new(0, 150, 0, 100)
 Frame.Active = true
 Frame.Draggable = true
 
 SetWaypointButton.Parent = Frame
-SetWaypointButton.BackgroundColor3 = Color3.fromRGB(173, 216, 230) -- biru muda pastel
+SetWaypointButton.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
 SetWaypointButton.Position = UDim2.new(0.25, 0, 0.1, 0)
 SetWaypointButton.Size = UDim2.new(0.5, 0, 0.35, 0)
 SetWaypointButton.Text = "Set Waypoint"
@@ -49,7 +55,7 @@ SetWaypointButton.MouseButton1Click:Connect(function()
 end)
 
 ViewHistoryButton.Parent = Frame
-ViewHistoryButton.BackgroundColor3 = Color3.fromRGB(173, 216, 230) -- biru muda pastel
+ViewHistoryButton.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
 ViewHistoryButton.Position = UDim2.new(0.25, 0, 0.55, 0)
 ViewHistoryButton.Size = UDim2.new(0.5, 0, 0.35, 0)
 ViewHistoryButton.Text = "Waypoint List"
@@ -60,7 +66,7 @@ end)
 
 -- === HistoryFrame ===
 HistoryFrame.Parent = Frame
-HistoryFrame.BackgroundColor3 = Color3.fromRGB(240, 255, 255) -- hijau muda pastel
+HistoryFrame.BackgroundColor3 = Color3.fromRGB(240, 255, 255)
 HistoryFrame.Position = UDim2.new(-1.05, 0, 0, 0)
 HistoryFrame.Size = UDim2.new(1, 0, 1, 0)
 HistoryFrame.Visible = false
@@ -78,7 +84,7 @@ UIPadding.PaddingRight = UDim.new(0, 5)
 UIPadding.Parent = HistoryFrame
 
 NamePromptFrame.Parent = ScreenGui
-NamePromptFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 240) -- kuning pastel
+NamePromptFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 240)
 NamePromptFrame.Position = UDim2.new(0.5, -100, 0.5, -50)
 NamePromptFrame.Size = UDim2.new(0, 200, 0, 100)
 NamePromptFrame.Visible = false
@@ -115,7 +121,7 @@ local function addWaypointToUI(waypoint)
     label.Position = UDim2.new(0, 25, 0, 0)
     label.Text = waypoint.name
     label.TextColor3 = Color3.fromRGB(60, 60, 60)
-    label.BackgroundColor3 = Color3.fromRGB(255, 250, 205) -- lemon chiffon
+    label.BackgroundColor3 = Color3.fromRGB(255, 250, 205)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = entryFrame
 
