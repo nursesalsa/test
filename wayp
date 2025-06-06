@@ -1,0 +1,124 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local SetWaypointButton = Instance.new("TextButton")
+local GotoWaypointButton = Instance.new("TextButton")
+local ViewHistoryButton = Instance.new("TextButton")
+local ClearHistoryButton = Instance.new("TextButton")
+local HistoryFrame = Instance.new("Frame")
+local NamePromptFrame = Instance.new("Frame")
+local NameTextBox = Instance.new("TextBox")
+local DoneButton = Instance.new("TextButton")
+local waypoints = {}
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+Frame.Size = UDim2.new(0, 150, 0, 200)
+Frame.Active = true
+Frame.Draggable = true
+
+SetWaypointButton.Parent = Frame
+SetWaypointButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+SetWaypointButton.Position = UDim2.new(0.25, 0, 0.05, 0)
+SetWaypointButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+SetWaypointButton.Text = "Set Waypoint"
+
+SetWaypointButton.MouseButton1Click:Connect(function()
+    NamePromptFrame.Visible = true
+end)
+
+GotoWaypointButton.Parent = Frame
+GotoWaypointButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+GotoWaypointButton.Position = UDim2.new(0.25, 0, 0.25, 0)
+GotoWaypointButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+GotoWaypointButton.Text = "Goto Waypoint"
+
+GotoWaypointButton.MouseButton1Click:Connect(function()
+    if #waypoints > 0 then
+        local waypoint = waypoints[#waypoints].position
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(waypoint)
+        print("Teleported to waypoint: " .. waypoints[#waypoints].name)
+    else
+        print("No waypoint set!")
+    end
+end)
+
+ViewHistoryButton.Parent = Frame
+ViewHistoryButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+ViewHistoryButton.Position = UDim2.new(0.25, 0, 0.45, 0)
+ViewHistoryButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+ViewHistoryButton.Text = "Waypoint List"
+
+ViewHistoryButton.MouseButton1Click:Connect(function()
+    HistoryFrame.Visible = not HistoryFrame.Visible
+end)
+
+ClearHistoryButton.Parent = Frame
+ClearHistoryButton.BackgroundColor3 = Color3.fromRGB(255, 69, 58)
+ClearHistoryButton.Position = UDim2.new(0.25, 0, 0.65, 0)
+ClearHistoryButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+ClearHistoryButton.Text = "Clear History"
+
+ClearHistoryButton.MouseButton1Click:Connect(function()
+    waypoints = {}
+    for _, child in ipairs(HistoryFrame:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
+    print("Waypoint history cleared!")
+end)
+
+HistoryFrame.Parent = Frame
+HistoryFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+HistoryFrame.Position = UDim2.new(1.05, 0, 0, 0)
+HistoryFrame.Size = UDim2.new(1, 0, 1, 0)
+HistoryFrame.Visible = false
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Parent = HistoryFrame
+
+NamePromptFrame.Parent = ScreenGui
+NamePromptFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+NamePromptFrame.Position = UDim2.new(0.5, -100, 0.5, -50)
+NamePromptFrame.Size = UDim2.new(0, 200, 0, 100)
+NamePromptFrame.Visible = false
+
+NameTextBox.Parent = NamePromptFrame
+NameTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NameTextBox.Position = UDim2.new(0.1, 0, 0.2, 0)
+NameTextBox.Size = UDim2.new(0.8, 0, 0.4, 0)
+NameTextBox.Text = "Enter waypoint name"
+
+DoneButton.Parent = NamePromptFrame
+DoneButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+DoneButton.Position = UDim2.new(0.3, 0, 0.7, 0)
+DoneButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+DoneButton.Text = "Done"
+
+DoneButton.MouseButton1Click:Connect(function()
+    local waypoint = {
+        position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+        name = NameTextBox.Text
+    }
+    table.insert(waypoints, waypoint)
+    print("Waypoint set: " .. waypoint.name .. " at " .. tostring(waypoint.position))
+
+    -- Update HistoryFrame
+    local label = Instance.new("TextButton")
+    label.Parent = HistoryFrame
+    label.Size = UDim2.new(1, 0, 0, 20)
+    label.Text = waypoint.name
+    label.TextColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+
+    label.MouseButton1Click:Connect(function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(waypoint.position)
+        print("Teleported to waypoint: " .. waypoint.name)
+    end)
+
+    NamePromptFrame.Visible = false
+    NameTextBox.Text = "Enter waypoint name"
+end)
