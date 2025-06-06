@@ -1,152 +1,16 @@
---[[
-    Waypoint System ala Infinite Yield + GUI (Fixed)
-    - Menyimpan waypoint dalam dictionary berbasis nama
-    - GUI untuk tambah, teleport, hapus
-    - Perbaikan: AutomaticCanvasSize berfungsi
-]]
-
-local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local placeId = tostring(game.PlaceId)
-local filename = "waypoints_dict_" .. placeId .. ".json"
-
-local waypoints = {}
-
--- Fungsi simpan dan muat
-local function saveWaypoints()
-    local json = HttpService:JSONEncode(waypoints)
-    writefile(filename, json)
-end
-
-local function loadWaypoints()
-    if isfile(filename) then
-        local data = readfile(filename)
-        local decoded = HttpService:JSONDecode(data)
-        if typeof(decoded) == "table" then
-            waypoints = decoded
-        end
-    end
-end
-
--- Menambahkan waypoint berdasarkan nama
 function addWaypoint(name)
-    local pos = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if pos then
-        local position = pos.Position
+    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        local position = hrp.Position
         waypoints[name] = {
             x = position.X,
             y = position.Y,
             z = position.Z
         }
-        print("Waypoint '"..name.."' disimpan.")
+        print("Waypoint '" .. name .. "' disimpan.")
         saveWaypoints()
     else
-        warn("Tidak bisa mendapatkan posisi karakter.")
+        warn("Tidak menemukan HumanoidRootPart. Pastikan karakter sudah spawn.")
     end
 end
-
--- Teleport ke waypoint berdasarkan nama
-function teleportTo(name)
-    local wp = waypoints[name]
-    if wp and wp.x and wp.y and wp.z then
-        local vec = Vector3.new(wp.x, wp.y, wp.z)
-        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(vec)
-        print("Teleported to " .. name)
-    else
-        warn("Waypoint tidak ditemukan atau format salah: " .. tostring(name))
-    end
-end
-
--- Hapus waypoint
-function deleteWaypoint(name)
-    if waypoints[name] then
-        waypoints[name] = nil
-        print("Waypoint '" .. name .. "' dihapus.")
-        saveWaypoints()
-    else
-        warn("Waypoint tidak ditemukan.")
-    end
-end
-
--- GUI
-local gui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
-local mainFrame = Instance.new("Frame", gui)
-mainFrame.Size = UDim2.new(0, 200, 0, 250)
-mainFrame.Position = UDim2.new(0.5, -100, 0.5, -125)
-mainFrame.BackgroundColor3 = Color3.fromRGB(255, 230, 250)
-mainFrame.Active = true
-mainFrame.Draggable = true
-
-local nameBox = Instance.new("TextBox", mainFrame)
-nameBox.PlaceholderText = "Waypoint name"
-nameBox.Size = UDim2.new(1, -20, 0, 30)
-nameBox.Position = UDim2.new(0, 10, 0, 10)
-
-local addBtn = Instance.new("TextButton", mainFrame)
-addBtn.Text = "Add Waypoint"
-addBtn.Size = UDim2.new(1, -20, 0, 30)
-addBtn.Position = UDim2.new(0, 10, 0, 50)
-addBtn.BackgroundColor3 = Color3.fromRGB(173, 216, 230)
-
-local listFrame = Instance.new("ScrollingFrame", mainFrame)
-listFrame.Size = UDim2.new(1, -20, 0, 140)
-listFrame.Position = UDim2.new(0, 10, 0, 90)
-listFrame.ScrollBarThickness = 6
-listFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-listFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-listFrame.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150)
-listFrame.BackgroundColor3 = Color3.fromRGB(240, 255, 255)
-listFrame.BorderSizePixel = 0
-
-function refreshList()
-    listFrame:ClearAllChildren()
-
-    local layout = Instance.new("UIListLayout")
-    layout.Padding = UDim.new(0, 5)
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Parent = listFrame
-
-    for name, pos in pairs(waypoints) do
-        local entry = Instance.new("Frame")
-        entry.Size = UDim2.new(1, 0, 0, 30)
-        entry.BackgroundTransparency = 1
-        entry.Parent = listFrame
-
-        local tpBtn = Instance.new("TextButton")
-        tpBtn.Text = name
-        tpBtn.Size = UDim2.new(0.6, -5, 1, 0)
-        tpBtn.Position = UDim2.new(0, 0, 0, 0)
-        tpBtn.BackgroundColor3 = Color3.fromRGB(255, 250, 205)
-        tpBtn.Parent = entry
-
-        local delBtn = Instance.new("TextButton")
-        delBtn.Text = "X"
-        delBtn.Size = UDim2.new(0.4, -5, 1, 0)
-        delBtn.Position = UDim2.new(0.6, 5, 0, 0)
-        delBtn.BackgroundColor3 = Color3.fromRGB(255, 105, 97)
-        delBtn.Parent = entry
-
-        tpBtn.MouseButton1Click:Connect(function()
-            teleportTo(name)
-        end)
-
-        delBtn.MouseButton1Click:Connect(function()
-            deleteWaypoint(name)
-            refreshList()
-        end)
-    end
-end
-
-addBtn.MouseButton1Click:Connect(function()
-    local name = nameBox.Text
-    if name ~= "" then
-        addWaypoint(name)
-        nameBox.Text = ""
-        refreshList()
-    end
-end)
-
--- Load saat pertama
-loadWaypoints()
-refreshList()
